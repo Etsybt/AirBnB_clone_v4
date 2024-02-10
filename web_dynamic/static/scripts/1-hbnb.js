@@ -1,15 +1,16 @@
-$(document).ready(function() {
-    // Listen for changes on each input checkbox tag
-    $('input[type="checkbox"]').change(function() {
-        var checkedAmenities = {}; // Variable to store Amenity IDs
-        $('input[type="checkbox"]:checked').each(function() {
-            // Store Amenity ID in the variable
-            var amenityId = $(this).data('id');
-            var amenityName = $(this).data('name');
-            checkedAmenities[amenityId] = amenityName;
-        });
-        // Update h4 tag inside the div Amenities with the list of Amenities checked
-        var amenitiesList = Object.values(checkedAmenities).join(', ');
-        $('.amenities h4').text('Amenities: ' + amenitiesList);
-    });
+$(document).ready(function () {
+  let checkedAmenities = {};
+  $(document).on('change', "input[type='checkbox']", function () {
+    if (this.checked) {
+      checkedAmenities[$(this).data('id')] = $(this).data('name');
+    } else {
+      delete checkedAmenities[$(this).data('id')];
+    }
+    let lst = Object.values(checkedAmenities);
+    if (lst.length > 0) {
+      $('div.amenities > h4').text(Object.values(checkedAmenities).join(', '));
+    } else {
+      $('div.amenities > h4').html('&nbsp;');
+    }
+  });
 });
