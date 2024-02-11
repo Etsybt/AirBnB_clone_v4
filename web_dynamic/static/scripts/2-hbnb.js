@@ -2,13 +2,13 @@ $(document).ready(function () {
   const selectedAmenities = {};
 
   $('input[type="checkbox"]').click(function () {
-    const amenityID = $(this).attr('data-id');
-    const amenityNAME = $(this).attr('data-name');
+    const amenity_id = $(this).attr('data-id');
+    const amenity_name = $(this).attr('data-name');
 
     if ($(this).prop('checked') === true) {
-        slectedAmenities[amenityID = amenityNAME;
+      selectedAmenities[amenity_id] = amenity_name;
     } else if ($(this).prop('checked') === false) {
-      delete selectedAmenities[amenityID];
+      delete selectedAmenities[amenity_id];
     }
 
     const selectedAmenitiesList = Object.values(selectedAmenities).join(', ');
@@ -21,6 +21,22 @@ $(document).ready(function () {
 
     if ($.isEmptyObject(selectedAmenities)) {
       $('.amenities h4').html('&nbsp;');
+    }
+  });
+
+  $.ajax({
+    url: 'http://0.0.0.0:5001/api/v1/status/',
+    type: 'GET',
+    dataType: 'json',
+    success: function (response) {
+      if (response.status === 'OK') {
+        $('DIV#api_status').addClass('available');
+      } else {
+        $('DIV#api_status').removeClass('available');
+      }
+    },
+    error: function (error) {
+      $('DIV#api_status').removeClass('available');
     }
   });
 });
